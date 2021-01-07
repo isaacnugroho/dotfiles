@@ -1,0 +1,134 @@
+[settings]
+columns = ~#disc,~#track,~title~version,~#lastplayed,artist,~#length,~album~discsubtitle,~dirname
+	
+default_rating = 0.5
+scan = /run/media/isaac-nugroho/on-the-go/music:/shared/Music
+
+[memory]
+browser = Paned
+browser_playlistsbrowser_maximized = 0
+browser_playlistsbrowser_position = 3214 322
+browser_playlistsbrowser_size_ = 600 400
+browser_searchbar_maximized = 0
+browser_searchbar_position = 454 401
+browser_searchbar_size_ = 2009 609
+chooser_dir = /shared/Music
+column_expands = ~title~version,0,~#lastplayed,1,artist,0,~album~discsubtitle,0,~dirname,1
+	
+column_widths = ~title~version,346,~#lastplayed,-1,artist,196,~album~discsubtitle,192,~dirname,-1
+	
+open_browsers = 
+plugin_prefs_maximized = 0
+plugin_prefs_position = 177 312
+plugin_prefs_size_ = 700 575
+plugin_selection = playcounteq
+prefs_page = library
+queue = False
+queue_disable = False
+queue_expanded = True
+queue_position = 0.5903141361256544
+quodlibet_information_maximized = 0
+quodlibet_information_position = -218 109
+quodlibet_information_size_ = 696 400
+quodlibet_last_active_version = 4.3.0
+quodlibet_maximized = 0
+quodlibet_position = 2796 57
+quodlibet_properties_maximized = 0
+quodlibet_properties_pos = 0.3532423208191126
+quodlibet_properties_position = 353 187
+quodlibet_properties_size_ = 1386 740
+quodlibet_properties_size_single = 586 400
+quodlibet_size_ = 1447 963
+repeat = False
+repeat_mode = repeat_song
+seek = 0
+shuffle = False
+shuffle_mode = Playcount Equalizer
+sidebar_pos = 0.9965445749827229
+song = http://cpop.bigbradio.net/
+sortby = 0~title~version
+	
+volume = 1.0
+
+[player]
+gst_buffer = 10.0
+gst_disable_gapless = false
+is_playing = True
+replaygain = true
+replaygain_mode = auto
+
+[browsers]
+collectionbrowser_pos = 0.27918424753867793
+equal_pane_width = false
+internetradio_pos = 0.14818763326226012
+pane_selection = 1	.
+	1	.
+	1	.
+	1	.
+panedbrowser_pane_widths = 0.22260748959778087,0.4220430107526882,0.3578125
+	
+panedbrowser_pos = 0.43717277486910994
+panes = <album>	artist	albumartist	~dirname
+playlistsbrowser_pos = 0.2098273572377158
+query_text = t
+radio = __fav
+soundcloud_pos = 0.399734395750332
+soundcloud_token = 1-180752-382547669-f464a6c9e16e6
+soundcloud_user_id = 
+
+[__config__]
+version = 0
+
+[plugins]
+active_plugins = ReplayGain
+	Playlist Export
+	playcounteq
+	APEv2 to ID3v2
+	python_query
+	Tray Icon
+	Regex Substitution
+	follow
+	FilterAll
+	mpd_server
+	Convert Encodings
+	HeadphoneMonitor
+	include_saved
+	WebLyrics
+	filterbrowser
+	conditional_query
+	radio_ad_mute
+	SeekBar
+	Automatic library update
+	mpris
+	Shuffle Playlist
+animosd_monitor = 0
+cover_engine_amazon = True
+cover_engine_discogs = True
+fingerprint_group_by_dir = true
+icon_tooltip = <album|<album~discnumber~part~tracknumber~title~version>|<artist~title~version>>
+lyricswindow_alternate_search_url = https://duckduckgo.com/?q=<artist|<artist>+-+>"<title>"+lyrics+chords
+lyricswindow_zoom_level = 1.0999999999999996
+missing_query_include_empty = True
+mpris_window_hide = true
+quodlibet.fake.plugins.gajim_status_accounts = 
+quodlibet.fake.plugins.gajim_status_pattern = <artist> - <title>
+quodlibet.fake.plugins.gajim_status_paused = True
+quodlibet.fake.plugins.gajim_status_statuses = online chat
+randomalbum_use_weights = 0
+replaygain_process_if = album_tags_missing
+scrobbler_service = Last.fm
+shufflebygrouping_grouping = ~grouping~album~albumartist
+shufflebygrouping_grouping_filter = grouping
+squeezebox_debug = False
+
+[rename]
+windows = true
+
+[editing]
+alltags = true
+auto_save_changes = false
+split_on = / & ,
+
+[tagsfrompath]
+titlecase = true
+
