@@ -12,9 +12,9 @@ local awful = require("awful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
 local wibox = require("wibox")
-local gfs = require("gears.filesystem")
 local gears = require("gears")
-local dpi = require('beautiful').xresources.apply_dpi
+local beautiful = require('beautiful')
+local utils = require("lib.utils")
 
 -- acpi sample outputs
 -- Battery 0: Discharging, 75%, 01:51:38 remaining
@@ -22,12 +22,13 @@ local dpi = require('beautiful').xresources.apply_dpi
 
 local WIDGET_DIR = RC.theme_path .. 'widgets/battery-widget'
 
+local icon_cache = {}
+
 local battery_widget = {}
 local function worker(user_args)
   local args = user_args or {}
 
   local font = args.font or 'Play 8'
-  local path_to_icons = args.path_to_icons or "/usr/share/icons/Arc/status/symbolic/"
   local show_current_level = args.show_current_level or false
   local margin_left = args.margin_left or 0
   local margin_right = args.margin_right or 0
@@ -46,13 +47,13 @@ local function worker(user_args)
     enable_battery_warning = true
   end
 
-  if not gfs.dir_readable(path_to_icons) then
-    naughty.notify {
-      title = "Battery Widget",
-      text = "Folder with icons doesn't exist: " .. path_to_icons,
-      preset = naughty.config.presets.critical
-    }
-  end
+  --if not gfs.dir_readable(path_to_icons) then
+  --  naughty.notify {
+  --    title = "Battery Widget",
+  --    text = "Folder with icons doesn't exist: " .. path_to_icons,
+  --    preset = naughty.config.presets.critical
+  --  }
+  --end
 
   local icon_widget = wibox.widget {
     {
@@ -84,8 +85,7 @@ local function worker(user_args)
           notification = naughty.notify {
             text = stdout,
             title = "Battery status",
-            icon = path_to_icons .. batteryType .. ".svg",
-            icon_size = dpi(16),
+            icon = icon_cache[batteryType],
             position = position,
             timeout = 5, hover_timeout = 0.5,
             width = 200,
@@ -162,33 +162,6 @@ local function worker(user_args)
         if show_current_level then
           level_widget.text = string.format('%d%%', charge)
         end
-        -- Update popup text
-        --battery_popup.text = stdout
-
-        --if (charge >= 0 and charge < 15) then
-        --  batteryType = "battery-empty%s-symbolic"
-        --  if enable_battery_warning and status ~= 'Charging'
-        --      and os.difftime(os.time(), last_battery_check) > 300 then
-        --    -- if 5 minutes have elapsed since the last warning
-        --    last_battery_check = os.time()
-        --
-        --    show_battery_warning()
-        --  end
-        --elseif (charge >= 15 and charge < 40) then
-        --  batteryType = "battery-caution%s-symbolic"
-        --elseif (charge >= 40 and charge < 60) then
-        --  batteryType = "battery-low%s-symbolic"
-        --elseif (charge >= 60 and charge < 80) then
-        --  batteryType = "battery-good%s-symbolic"
-        --elseif (charge >= 80 and charge <= 100) then
-        --  batteryType = "battery-full%s-symbolic"
-        --end
-        --
-        --if status == 'Charging' then
-        --  batteryType = string.format(batteryType, '-charging')
-        --else
-        --  batteryType = string.format(batteryType, '')
-        --end
         if (charge < 5) then
           batteryType = "battery-empty%s-symbolic"
         elseif (charge < 10) then
@@ -231,7 +204,23 @@ local function worker(user_args)
           batteryType = string.format(batteryType, '')
         end
 
-        widget.icon:set_image(path_to_icons .. batteryType .. ".svg")
+        if not icon_cache[batteryType] then
+          local iconFile = utils.lookup_icon(batteryType)
+          if iconFile then
+            if (charge < 15) then
+              icon_cache[batteryType] = gears.color.recolor_image(iconFile, "#ff0162")
+            elseif (charge < 45) then
+              icon_cache[batteryType] = gears.color.recolor_image(iconFile, "#f46c85")
+            elseif (charge < 65) then
+              icon_cache[batteryType] = gears.color.recolor_image(iconFile, "#f9b5af")
+            elseif (charge < 85) then
+              icon_cache[batteryType] = gears.color.recolor_image(iconFile, "#fcddd2")
+            else
+              icon_cache[batteryType] = gears.color.recolor_image(iconFile, "#fef8ed")
+            end
+          end
+        end
+        widget.icon:set_image(icon_cache[batteryType])
 
       end,
       icon_widget)

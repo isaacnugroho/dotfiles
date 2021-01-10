@@ -1,7 +1,7 @@
 local wibox = require("wibox")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local mykeyboardlayout = awful.widget.keyboardlayout()
+--local mykeyboardlayout = awful.widget.keyboardlayout()
 
 local function init()
   local battery_widget = dofile(RC.theme_path .. 'widgets/battery-widget/battery.lua')
@@ -14,7 +14,7 @@ local function init()
     menu = RC.main_menu
   })
 
-  log.debug(RC.main_menu or "main_menu not found")
+  --log.debug(RC.main_menu or "main_menu not found")
   screen.connect_signal("request::desktop_decoration",
       function(s)
         -- Each screen has its own tag table.
@@ -132,12 +132,10 @@ local function init()
           s.mytasklist, -- Middle widget
           { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            --mykeyboardlayout,
             wibox.widget.systray(),
             battery_widget({
               font = beautiful.font,
-              path_to_icons = "/usr/share/icons/" .. beautiful.icon_theme .. "/status/symbolic/",
-              notification_position = "bottom_right",
               display_notification = true,
             }),
             mytextclock,

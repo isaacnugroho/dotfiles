@@ -15,4 +15,3 @@ echo "$_awesome_pid" > "$_check_file"
 sleep 3
 
 xscreensaver -no-splash &
-nm-applet &

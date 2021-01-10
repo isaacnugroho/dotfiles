@@ -14,6 +14,5 @@ echo "$_awesome_pid" > "$_check_file"
 
 sleep 3
 
-#disable global autostart
-#dex -v --environment awesome --autostart --search-paths "${XDG_CONFIG_DIRS:-/etc/xdg}/autostart:${XDG_CONFIG_HOME:-~/.config}/autostart" 1>/dev/null
-dex -v --environment awesome --autostart --search-paths "${XDG_CONFIG_HOME:-~/.config}/autostart" 1>/dev/null
+dex -v --environment awesome --autostart --search-paths "${XDG_CONFIG_DIRS:-/etc/xdg}/autostart:${XDG_CONFIG_HOME:-~/.config}/autostart" 1>/dev/null
+#dex -v --environment awesome --autostart --search-paths "${XDG_CONFIG_HOME:-~/.config}/autostart" 1>/dev/null

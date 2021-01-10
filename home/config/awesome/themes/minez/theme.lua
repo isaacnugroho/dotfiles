@@ -102,22 +102,6 @@ local function choose_contrast_color(reference, candidate1, candidate2)
   end
 end
 
-local function read_gtk3_settings(key)
-  local file = io.open(GTK3_CONFIG, "rb")
-  if not file then
-    return nil
-  end
-  file:close()
-
-  for line in io.lines(GTK3_CONFIG) do
-    value = line:match('^' .. key:gsub('%-', '%%-') .. '=(.*)$')
-    if value then
-      return value
-    end
-  end
-  return nil
-end
-
 local function init_theme()
   -- inherit xresources theme:
   local theme = dofile(themes_path .. "xresources/theme.lua")
@@ -161,10 +145,11 @@ local function init_theme()
   theme.border_color_active = theme.gtk.wm_border_focused_color
   theme.border_color_marked = theme.gtk.success_color
 
-  theme.border_width = dpi(theme.gtk.button_border_width or 1)
+  --theme.border_width = dpi(theme.gtk.button_border_width or 1)
+  theme.border_width = dpi(1)
   theme.border_radius = theme.gtk.button_border_radius
 
-  theme.useless_gap = dpi(1)
+  theme.useless_gap = 0
 
   local rounded_rect_shape = function(cr, w, h)
     gears_shape.rounded_rect(
@@ -350,11 +335,6 @@ local function init_theme()
   theme = theme_assets.recolor_titlebar(
       theme, theme.gtk.error_bg_color, "focus", "press"
   )
-
-  -- Define the icon theme for application icons. If not set then the icons
-  -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-
-  theme.icon_theme = read_gtk3_settings('gtk-icon-theme-name')
 
   -- Generate Awesome icon:
   theme.awesome_icon = theme_assets.awesome_icon(

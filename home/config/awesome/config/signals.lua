@@ -131,5 +131,5 @@ client.connect_signal("request::titlebars",
           layout = wibox.layout.align.horizontal
         }
       end
-      functions.titlebar_created(c)
+      awful.titlebar.hide(c)
     end)
