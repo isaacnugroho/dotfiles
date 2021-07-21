@@ -14,9 +14,11 @@ function _M.get()
       },
       properties = {
         focus = awful.client.focus.filter,
+        floating = true,
         raise = true,
         screen = awful.screen.preferred,
-        placement = awful.placement.no_overlap + awful.placement.centered + awful.placement.no_offscreen
+        -- placement = awful.placement.no_overlap + awful.placement.no_offscreen
+        placement = awful.placement.no_offscreen
       }
     },
 
@@ -59,14 +61,14 @@ function _M.get()
         floating = true
       }
     },
-    {
-      id = "sticky",
-      rule = { class = "Xfdesktop" },
-      properties = {
-        border_width = 0,
-        sticky = true,
-      }
-    },
+    -- {
+    --   id = "sticky",
+    --   rule = { class = "Xfdesktop" },
+    --   properties = {
+    --     border_width = 0,
+    --     sticky = true,
+    --   }
+    -- },
     -- Add titlebars to normal clients and dialogs
     {
       id = "titlebar",

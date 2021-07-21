@@ -1,0 +1,64 @@
+# vim:sw=2:sts=2:ts=2:et
+
+lib =
+    default_values() {
+      export MR_BASE_REPO=https://gitlab.kuelap.io
+      export MR_WORK_REPO=https://gitlab.kuelap.io/icno
+      export MR_BASE_REMOTE_NAME=upstream
+      export MR_WORK_REMOTE_NAME=work
+      export GIT_USER_NAME="Isaac A. Nugroho"
+      export GIT_USER_EMAIL=isaac.nugroho@kuelap.io
+    }
+    set_values() {
+      default_values
+      if [[ -e $(dirname $MR_CONFIG)/.mrconfig-extra ]]; then
+        source $(dirname $MR_CONFIG)/.mrconfig-extra
+      fi
+      if [[ -e $MR_REPO/.mrconfig-extra ]]; then
+        source $MR_REPO/.mrconfig-extra
+      fi
+    }
+    is_work_not_defined() {
+      if [[ -z "$MR_BASE_REPO" || -z "$MR_WORK_REPO" || "$MR_BASE_REPO" == "$MR_WORK_REPO" ]]; then
+        echo 1
+      elif git remote -v | grep -q $MR_WORK_REMOTE_NAME; then
+        echo 1
+      fi
+      echo 0
+    }
+    checkout_feature() {
+      _pull=
+      if [[ ! -z "$1" ]]; then
+        git branch -a | grep -E "${1}$" && git checkout $1 && _pull=ok
+        echo $_pull
+      fi
+    }
+    run_on_feature() {
+      _pull=
+      if [[ $# > 1 ]]; then
+        _branch=$1
+        shift
+        git status -sb | grep -E "^## ${_branch}\." || echo skipped
+        git status -sb | grep -Eq "^## ${_branch}\." && bash -c "$@"
+        echo $_pull
+      fi
+    }
+
+addPrivateRemote = set_values && if [[ $(is_work_not_defined) == "0" ]]; then git remote add $MR_WORK_REMOTE_NAME $(git remote get-url ${MR_BASE_REMOTE_NAME:-origin} | sed -e "s#$MR_BASE_REPO#$MR_WORK_REPO#"); fi
+
+viewVariables = set_values && env | grep '^MR_'
+
+checkGradlew = find . -type f -name "gradlew" -exec chmod +x {} \;
+
+forceCheckoutMaster =  set_values && git checkout -B master --track ${MR_BASE_REMOTE_NAME:-origin}/master -f && git pull
+
+configGitUser = set_values && git config user.name "${GIT_USER_NAME}" && git config user.email "${GIT_USER_EMAIL}"
+
+info = set_values && git status -sb
+infoBranch = set_values && git status -sb && git branch -v
+
+fetchAll = set_values && git fetch --all -p
+
+feature = set_values && checkout_feature $@ 
+
+runOnFeature = set_values && run_on_feature "$@"

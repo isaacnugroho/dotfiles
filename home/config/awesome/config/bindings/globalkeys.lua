@@ -104,7 +104,9 @@ function _M.get()
   -- Standard program
       awful.key({ modkey }, "Return",
           function()
-            awful.spawn(terminal)
+            awful.spawn.raise_or_spawn(terminal .. " -d=~", {
+              skip_taskbar = true
+            })
           end,
           { description = "open a terminal", group = "launcher" }
       ),
@@ -177,14 +179,14 @@ function _M.get()
           { description = "restore minimized", group = "client" }
       ),
   -- Prompt
-      awful.key({ modkey }, "r",
+      awful.key({ modkey }, "p",
           function()
             awful.screen.focused().mainbar.visible = true
             awful.screen.focused().mypromptbox:run()
           end,
           { description = "run prompt", group = "launcher" }
       ),
-      awful.key({ modkey }, "x",
+      awful.key({ modkey, "Shift" }, "p",
           function()
             awful.prompt.run {
               prompt = "Run Lua code: ",
@@ -197,16 +199,15 @@ function _M.get()
       ),
 
   -- Menubar
-      awful.key({ modkey }, "a",
+      -- awful.key({ modkey }, "a",
+      --     function()
+      --       menubar.show()
+      --     end,
+      --     { description = "show the menubar", group = "launcher" }
+      -- ),
+      awful.key({ modkey}, "a",
           function()
-            menubar.show()
-          end,
-          { description = "show the menubar", group = "launcher" }
-      ),
-
-      awful.key({ modkey, "Shift" }, "a",
-          function()
-            awful.spawn("xfce4-appfinder")
+            awful.spawn.raise_or_spawn("rofi -show")
           end,
           { description = "run app finder", group = "launcher" }
       ),

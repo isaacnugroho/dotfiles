@@ -1,6 +1,11 @@
-##### THIS FILE IS BEING CURRENTLY MANAGED BY URXVTCONFIG #####
-##### CHANGES DONE TO THIS FILE MANUALLY MAY AFFECT THE FUNCTIONALITY ######
-##### PROCEED WITH CAUTION! #####
+Xft.antialias:  1
+Xft.autohint:   0
+Xft.dpi:        132
+Xft.hinting:    1
+Xft.hintstyle:  hintfull
+Xft.lcdfilter:  lcddefault
+Xft.rgba:       rgb
+Xcursor.size:   44
 
 ! special colors
 *.foreground:  #93a1a1
@@ -31,8 +36,8 @@
 *.color7:      #93a1a1
 *.color15:     #fdf6e3
 
-URxvt*scrollBar:         false
-URxvt*scrollBar_right:   false
+URxvt*scrollBar:         true
+URxvt*scrollBar_right:   true
 
 URxvt*transparent:       false
 
@@ -43,5 +48,4 @@ URxvt.font: xft:Cascadia Mon:pixelsize=4
 URxvt.letterSpace: 0
 
 *antialias:  true
-*autohint:   true
-
+*autohint:   false

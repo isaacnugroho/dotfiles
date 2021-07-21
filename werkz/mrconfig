@@ -1,0 +1,314 @@
+[DEFAULT]
+include = if [[ -e ~/mrscripts ]]; then cat ~/mrscripts 2>/dev/null; else echo ""; fi
+include = if [[ -e $(dirname $MR_CONFIG)/mrscripts ]]; then cat $(dirname $MR_CONFIG)/mrscripts 2>/dev/null; else echo ""; fi
+
+[kuelap-connect/dev]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/dev.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'dev'
+
+[kuelap-connect/pangaea]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/pangaea.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'pangaea'
+#
+# Core
+#
+
+[kuelap-connect/core/dependency-platform]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/dependency-platform.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'dependency-platform'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 10
+
+[kuelap-connect/core/lang]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/lang.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'lang'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 20
+
+[kuelap-connect/core/api]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/api.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'api'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 30
+
+[kuelap-connect/core/rdbms]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/rdbms.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'rdbms'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 40
+
+#[kuelap-connect/core/cassandra]
+#checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/cassandra.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'cassandra'
+#clean = ./gradlew clean
+#build = ./gradlew clean publishToMavenLocal $@
+#order = 40
+
+[kuelap-connect/core/async]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/async.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'async'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 40
+
+[kuelap-connect/core/command]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/command.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'command'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/mathlib]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/mathlib.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'mathlib'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/test]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/test.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'test'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/crypto]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/crypto.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'crypto'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/anubis]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/anubis.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'anubis'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/queue]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/queue.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'queue'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/workbook]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/workbook.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'workbook'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+[kuelap-connect/core/rest]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/rest.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'rest'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 50
+
+#
+# Service
+#
+
+[kuelap-connect/service/identity]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/identity.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'identity'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/identifier]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/identifier.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'identifier'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/catalog]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/catalog.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'catalog'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/office]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/office.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'office'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/calendar]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/calendar.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'calendar'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/forex]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/forex.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'forex'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/reporting]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/reporting.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'reporting'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal 
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+[kuelap-connect/service/provisioner]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/provisioner.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'provisioner'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal 
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 110
+
+[kuelap-connect/service/customer]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/customer.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'customer'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 110
+
+[kuelap-connect/service/accounting]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/accounting.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'accounting'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 120
+
+[kuelap-connect/service/deposit]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/deposit.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'deposit'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 130
+
+[kuelap-connect/service/loan]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/loan.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'loan'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 130
+
+[kuelap-connect/service/cheques]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/cheques.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'cheques'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 140
+
+[kuelap-connect/service/payroll]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/payroll.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'payroll'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 140
+
+[kuelap-connect/service/teller]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/teller.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'teller'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 150
+
+[kuelap-connect/service/accessmanagement]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/accessmanagement.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'accessmanagement'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 150
+
+[kuelap-connect/service/sakkara]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/sakkara.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'sakkara'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 150
+
+[kuelap-connect/service/integration]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/integration.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'integration'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 150
+
+[kuelap-connect/service/pianemo]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/pianemo.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'pianemo'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 160
+
+[kuelap-connect/service/datareporting]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/datareporting.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'datareporting'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 160
+
+[kuelap-connect/service/reportgenerator]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/reportgenerator.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'reportgenerator'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 170
+
+[kuelap-connect/service/reportingbridge]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/reportingbridge.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'reportingbridge'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 180
+
+
+[kuelap-connect/service/autotransfer]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/service/auto-transfer.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'autotransfer'
+jibDockerBuild = cd ./service && ../gradlew jibDockerBuild $@
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 170
+
+#
+# Runtime
+#
+
+[kuelap-connect/runtime/catapult]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/runtime/catapult.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'catapult'
+clean = ./gradlew clean
+build = ./gradlew clean bootJar createDistZip
+order = 190
+
+[kuelap-connect/runtime/gateway]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/runtime/gateway.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'gateway'
+clean = ./gradlew clean
+jib = ./gradlew clean jibDockerBuild
+order = 100
+
+[kuelap-connect/runtime/cassandramigration]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/runtime/cassandramigration.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'cassandramigration'
+clean = ./gradlew clean
+jib = cd ./service && ../gradlew jibDockerBuild $@
+order = 100
+
+#
+# Apps
+#
+
+[kuelap-connect/apps/aten]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/apps/aten.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'aten'
+buildApps = npm install
+jib = docker build -t aten .
+order = 100
+
+[kuelap-connect/apps/bayes]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/apps/bayes.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'bayes'
+buildApps = npm install
+jib = docker build -t bayes .
+order = 110
+
+[kuelap-connect/apps/octo]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/apps/octo.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'octo'
+buildApps = npm install
+jib = REACT_APP_API_BASE_URL=http://${DEVHOST:-localhost}/finance/v1 docker build -t octo .
+order = 130
+
+[kuelap-connect/core/buildlogic]
+checkout = set_values && git clone "$MR_BASE_REPO/kuelap-connect/core/buildlogic.git" -o ${MR_BASE_REMOTE_NAME:-origin} 'buildlogic'
+clean = ./gradlew clean
+build = ./gradlew clean publishToMavenLocal $@
+order = 5
+

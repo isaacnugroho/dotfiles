@@ -13,7 +13,7 @@ function _M.get()
           end,
           { description = "toggle fullscreen", group = "client" }
       ),
-      awful.key({ modkey, "Shift" }, "c",
+      awful.key({ modkey, }, "x",
           function(c)
             c:kill()
           end,

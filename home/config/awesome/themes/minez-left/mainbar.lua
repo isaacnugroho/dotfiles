@@ -113,35 +113,45 @@ local function init()
                 function()
                   awful.client.focus.byidx(1)
                 end),
-          }
+          },
+          layout = {
+            layout = wibox.layout.align.vertical,
+          },
         }
 
         -- Create the wibox
 
-        s.mainbar = awful.wibar({ position = "top", screen = s })
+        s.mainbar = awful.wibar({ position = "left", screen = s })
 
         -- Add widgets to the wibox
-        s.mainbar.widget = {
-          layout = wibox.layout.align.horizontal,
-          { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.mytaglist,
-            s.mypromptbox,
-          },
-          s.mytasklist, -- Middle widget
-          { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            --mykeyboardlayout,
-            wibox.widget.systray(),
-            battery_widget({
-              font = beautiful.font,
-              display_notification = true,
-            }),
-            mytextclock,
-            s.mylayoutbox,
-          },
-        }
+        local systray = wibox.widget.systray()
+        systray:set_horizontal(false)
+        local bottom_layout = wibox.layout.fixed.horizontal()
+        bottom_layout:add(s.mylayoutbox)
+        bottom_layout:add(mytextclock)
+        bottom_layout:add(systray)
+        bottom_layout:add(battery_widget({
+          font = beautiful.font,
+          display_notification = true,
+        }))
+        local top_layout = wibox.layout.fixed.horizontal()
+        top_layout:add(s.mypromptbox)
+        top_layout:add(s.mytaglist)
+
+        local layout = wibox.layout.align.horizontal()
+        layout:set_first(bottom_layout)
+        layout:set_third(top_layout)
+
+        local rotate =wibox.layout.rotate()
+        rotate:set_direction("east")
+        rotate:set_widget(layout)
+
+        local wibox_layout = wibox.layout.fixed.vertical()
+        wibox_layout:add(mylauncher)
+        wibox_layout:add(s.mytasklist)
+        wibox_layout:add(rotate)
+
+        s.mainbar.widget = wibox_layout
       end)
 end
 

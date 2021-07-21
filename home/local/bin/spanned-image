@@ -6,6 +6,7 @@ declare -a CUSTOM_MONITORS
 declare -a REF_MON_H
 declare -a REF_MON_V
 
+declare -r name=0
 declare -r pxWidth=1
 declare -r pxHeight=2
 declare -r mmWidth=3
@@ -18,6 +19,9 @@ declare -r cropX=9
 declare -r cropY=10
 declare -r cropW=11
 declare -r cropH=12
+
+declare -r adjustMmOffsetX=1
+declare -r adjustMmOffsetY=2
 
 declare -i NUM_MONITORS
 declare -i CANVAS_WIDTH=0
@@ -69,17 +73,20 @@ determine_canvas() {
 }
 
 determine_references() {
-  (( i = 0 ))
+  REF_MON_H=(${MONITORS[0]})
+  REF_MON_V=(${MONITORS[0]})
+  (( i = 1 ))
+
   while [[ $i -lt $NUM_MONITORS ]]; do
     tmpMon=(${MONITORS[$i]})
 
     if [[ ${tmpMon[${pixelX}]} -eq 0 ]]; then
-      if [[ -z "${REF_MON_H[0]}" || ${REF_MON_H[$pxWidth]} -lt ${tmpMon[$pxWidth]} ]]; then
+      if [[ ${REF_MON_H[$pixelX]} -lt ${tmpMon[$pixelX]} ]]; then
         REF_MON_H=(${tmpMon[*]})
       fi
     fi
     if [[ ${tmpMon[${pixelY}]} -eq 0 ]]; then
-      if [[ -z "${REF_MON_H[0]}" || ${REF_MON_V[$pxHeight]} -lt ${tmpMon[$pxHeight]} ]]; then
+      if [[ ${REF_MON_V[$pixelY]} -lt ${tmpMon[$pixelY]} ]]; then
         REF_MON_V=(${tmpMon[*]})
       fi
     fi
@@ -117,15 +124,15 @@ determine_offsets() {
     (( j = 0 ))
     while [[ $j -lt ${#CUSTOM_MONITORS[*]} ]]; do 
       tmpArr=(${CUSTOM_MONITORS[j]})
-      if [[ "${tmpArr[0]}" == "${tmpMon[0]}" ]]; then
-        if [[ "${tmpArr[1]}" -ne 0 ]]; then
-          (( tmpMon[${mmOffsetX}] = tmpMon[${mmOffsetX}] + tmpArr[1] ))
+      if [[ "${tmpArr[${name}]}" == "${tmpMon[${name}]}" ]]; then
+        if [[ "${tmpArr[${adjustMmOffsetX}]}" -ne 0 ]]; then
+          (( tmpMon[${mmOffsetX}] = tmpMon[${mmOffsetX}] + tmpArr[${adjustMmOffsetX}] ))
           if [[ $adjustX -gt tmpMon[${mmOffsetX}] ]]; then
             (( adjustX = tmpMon[${mmOffsetX}] ))
           fi
         fi
-        if [[ "${tmpArr[2]}" -ne 0 ]]; then
-          (( tmpMon[${mmOffsetY}] = tmpMon[${mmOffsetY}] + tmpArr[2] ))
+        if [[ "${tmpArr[${adjustMmOffsetY}]}" -ne 0 ]]; then
+          (( tmpMon[${mmOffsetY}] = tmpMon[${mmOffsetY}] + tmpArr[${adjustMmOffsetY}] ))
           if [[ $adjustY -gt tmpMon[${mmOffsetY}] ]]; then
             (( adjustY = tmpMon[${mmOffsetY}] ))
           fi
@@ -138,16 +145,16 @@ determine_offsets() {
     (( i = i + 1 ))
   done
 
-  if [[ $adjustX -lt 0 || $adjustY -lt 0 ]]; then
-    (( i = 0 ))
-    while [[ $i -lt $NUM_MONITORS ]]; do
-      tmpMon=(${MONITORS[$i]})
-      (( tmpMon[${mmOffsetX}] = tmpMon[${mmOffsetX}] - adjustX ))
-      (( tmpMon[${mmOffsetY}] = tmpMon[${mmOffsetY}] - adjustY ))
-      MONITORS[$i]="${tmpMon[*]}"
-      (( i = i + 1 ))
-    done
-  fi
+  # if [[ $adjustX -lt 0 || $adjustY -lt 0 ]]; then
+  #   (( i = 0 ))
+  #   while [[ $i -lt $NUM_MONITORS ]]; do
+  #     tmpMon=(${MONITORS[$i]})
+  #     (( tmpMon[${mmOffsetX}] = tmpMon[${mmOffsetX}] - adjustX ))
+  #     (( tmpMon[${mmOffsetY}] = tmpMon[${mmOffsetY}] - adjustY ))
+  #     MONITORS[$i]="${tmpMon[*]}"
+  #     (( i = i + 1 ))
+  #   done
+  # fi
 }
 
 determine_area() {
@@ -176,11 +183,11 @@ calculate_image() {
     (( USABLE_WIDTH = IMAGE_WIDTH ))
     (( USABLE_HEIGHT = _t1 ))
     (( USABLE_OFFSET_X = 0 ))
-    (( USABLE_OFFSET_Y = 2 * (IMAGE_HEIGHT - USABLE_HEIGHT) / 5 ))
+    (( USABLE_OFFSET_Y = (3 * (IMAGE_HEIGHT - USABLE_HEIGHT) + 4) / 8 ))
   else
     (( USABLE_WIDTH = _t2 ))
     (( USABLE_HEIGHT = IMAGE_HEIGHT ))
-    (( USABLE_OFFSET_X = (IMAGE_WIDTH - USABLE_WIDTH) / 2 ))
+    (( USABLE_OFFSET_X = (IMAGE_WIDTH - USABLE_WIDTH + 1) / 2 ))
     (( USABLE_OFFSET_Y = 0 ))
   fi
 }
@@ -243,18 +250,24 @@ print_variables() {
   echo "REF_MON_V=(${REF_MON_V[@]})"
   echo "CUSTOM_MONITORS=(${CUSTOM_MONITORS[@]})"
 
-  echo "pxWidth=${pxWidth}"
-  echo "pxHeight=${pxHeight}"
-  echo "mmWidth=${mmWidth}"
-  echo "mmHeight=${mmHeight}"
-  echo "pixelX=${pixelX}"
-  echo "pixelY=${pixelY}"
-  echo "mmOffsetX=${mmOffsetX}"
-  echo "mmOffsetY=${mmOffsetY}"
-  echo "cropX=${cropX}"
-  echo "cropY=${cropY}"
-  echo "cropW=${cropW}"
-  echo "cropH=${cropH}"
+  (( i = 0 ))
+  while [[ $i -lt $NUM_MONITORS ]]; do
+    tmpMon=(${MONITORS[$i]})
+    echo "${tmpMon[${name}]}"
+    echo "  pxWidth=${tmpMon[${pxWidth}]}"
+    echo "  pxHeight=${tmpMon[${pxHeight}]}"
+    echo "  mmWidth=${tmpMon[${mmWidth}]}"
+    echo "  mmHeight=${tmpMon[${mmHeight}]}"
+    echo "  pixelX=${tmpMon[${pixelX}]}"
+    echo "  pixelY=${tmpMon[${pixelY}]}"
+    echo "  mmOffsetX=${tmpMon[${mmOffsetX}]}"
+    echo "  mmOffsetY=${tmpMon[${mmOffsetY}]}"
+    echo "  cropX=${tmpMon[${cropX}]}"
+    echo "  cropY=${tmpMon[${cropY}]}"
+    echo "  cropW=${tmpMon[${cropW}]}"
+    echo "  cropH=${tmpMon[${cropH}]}"
+    (( i = i + 1 ))
+  done
 }
 
 main_routine() {

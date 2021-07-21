@@ -10,6 +10,8 @@ local utils = require("lib.utils")
 local skip_autostarts = os.getenv("AWESOME_SKIP_AUTOSTARTS")
 local log_level = os.getenv("LOG_LEVEL")
 
+utils.run_apps_in(gears.filesystem.get_configuration_dir() .. "autostart.d/", "^0.+")
+
 RC = {}
 RC.functions = {}
 RC.properties = require("config.properties")
@@ -47,7 +49,7 @@ root.buttons(RC.bindings.globalbuttons)
 root.keys(RC.bindings.globalkeys)
 
 RC.theme_path = gears.filesystem.get_configuration_dir() .. "themes/" .. RC.properties.theme_name .. "/"
-local theme_module_path = "themes." .. RC.properties.theme_name .. "."
+RC.theme_module_path = "themes." .. RC.properties.theme_name .. "."
 
 local theme = dofile(RC.theme_path .. "theme.lua")
 
@@ -56,6 +58,6 @@ theme.init()
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
 if (skip_autostarts == nil) then
-  utils.run_apps_in(gears.filesystem.get_configuration_dir() .. "autostart.d/")
-  utils.run_apps_in(RC.theme_path .. "autorun.d/")
+  utils.run_apps_in(gears.filesystem.get_configuration_dir() .. "autostart.d/", "^[^0].+")
+  utils.run_apps_in(RC.theme_path .. "autorun.d/", nil)
 end

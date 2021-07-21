@@ -12,6 +12,8 @@ if [[ -e "$_check_file" ]]; then
 fi
 echo "$_awesome_pid" > "$_check_file"
 
-sleep 3
+sleep 0.5s
 
+#cbatticon &
+lxqt-powermanagement &
 xscreensaver -no-splash &

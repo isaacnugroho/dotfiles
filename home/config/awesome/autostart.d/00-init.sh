@@ -14,4 +14,4 @@ echo "$_awesome_pid" > "$_check_file"
 
 sleep 0.5s
 
-dex -v --environment awesome --autostart --search-paths "${XDG_CONFIG_DIRS:-/etc/xdg}/autostart:${XDG_CONFIG_HOME:-~/.config}/autostart" 1>/dev/null
+xdg_menu --format awesome --root-menu /etc/xdg/menus/arch-applications.menu > ~/.config/awesome/config/xdgmenu.lua

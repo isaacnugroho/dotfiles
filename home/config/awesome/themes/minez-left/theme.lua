@@ -19,9 +19,9 @@ local debug = require("gears.debug")
 local HOME = os.getenv("HOME")
 local GTK3_CONFIG = HOME .. '/.config/gtk-3.0/settings.ini'
 
-local titlebar = require("themes.minez.titlebar")
-local layouts = require("themes.minez.layouts")
-local mainbar = require("themes.minez.mainbar")
+local titlebar = require(RC.theme_module_path .. "titlebar")
+local layouts = require(RC.theme_module_path .. "layouts")
+local mainbar = require(RC.theme_module_path .. "mainbar")
 
 -- Helper functions for modifying hex colors:
 --
