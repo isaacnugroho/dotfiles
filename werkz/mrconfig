@@ -1,4 +1,5 @@
 [DEFAULT]
+include = if [[ -e ~/mrcredentials ]]; then cat ~/mrcredentials 2>/dev/null; else echo ""; fi
 include = if [[ -e ~/mrscripts ]]; then cat ~/mrscripts 2>/dev/null; else echo ""; fi
 include = if [[ -e $(dirname $MR_CONFIG)/mrscripts ]]; then cat $(dirname $MR_CONFIG)/mrscripts 2>/dev/null; else echo ""; fi
 
